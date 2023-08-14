@@ -1,0 +1,36 @@
+<section class="container-form">
+  <form action="/views/realtimeproducts" method="POST">
+    <div>
+      <label for="">PRODUCTO:</label>
+      <input type="text" name="title">
+    </div>
+    <div>
+      <label for="">DESCRIPCION:</label>
+      <input type="text" name="description">
+    </div>
+    <div>
+      <label for="">PRECIO:</label>
+      <input type="text" name="price">
+    </div>
+    <div>
+      <label for="">THUMBNAIL:</label>
+      <input type="file" name="file" class="file">
+    </div>
+    <div>
+      <label for="">CATEGORIA:</label>
+      <input type="text" name="category">
+    </div>
+    <div>
+      <label for="">STOCK:</label>
+      <input type="text" name="stock">
+    </div>
+    <div>
+      <label for="">CODE:</label>
+      <input type="text" name="code">
+    </div>
+    <input class="enviar" type="submit" value="Enviar">
+  <form>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtimeproducts.js"></script>
