@@ -7,12 +7,20 @@ export const productsRouter = Router();
 
 productsRouter.get("/", async (req, res) => {
 
-  const { limit } = req.query
+  const { limit } = req.query || 10
+
+  const page = req.query || 1
   
   try {
     const prods = await productsModel.find()
+    // const prods = await productsModel.paginate({}, {limit})
 
-    return res.json(limit ? prods.splice(0, limit) : prods)
+    console.log(prods)
+
+    // prods.docs = prods.docs.map(docs => docs.toObject())
+
+    // return res.json(limit ? prods.splice(0, limit) : prods)
+    return res.json(prods)
 
   }catch (err) {
     return res.json(err)

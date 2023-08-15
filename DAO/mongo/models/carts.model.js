@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
 
 const cartsSchema = mongoose.Schema({
-  title: String,
-  price: Number
+  Product: {
+    type: Array,
+    default: []
+  },
+  Quantity: Number
 })
 
 const cartsModel = mongoose.model("carts", cartsSchema)

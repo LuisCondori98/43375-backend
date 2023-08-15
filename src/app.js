@@ -20,7 +20,7 @@ app.set("./views", "/views")
 app.set("view engine", "handlebars")
 
 //Mongoose
-const MONGO_CONNECT = "mongodb+srv://lcondori11:100198@codercluster.jw83zt7.mongodb.net/ecommerce?retryWrites=true&w=majority"
+const MONGO_CONNECT = "mongodb+srv://luisbarker11:IvkCQGSAr89lPcCh@cluster.p21e02a.mongodb.net/ecommerce?retryWrites=true&w=majority"
 
 mongoose.connect(MONGO_CONNECT)
   .then(() => {
