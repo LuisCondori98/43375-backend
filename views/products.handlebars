@@ -1,0 +1,98 @@
+<p id="saludo"></p>
+
+{{!-- <table>
+  <tr>
+    <th>ID</th>
+    <th>PRODUCTO</th>
+    <th>DESCRIPCION</th>
+    <th>PRECIO</th>
+    <th>THUMBNAIL</th>
+    <th>CATEGORIA</th>
+    <th>STOCK</th>
+    <th>CODE</th>
+    <th>STATUS</th>
+    <th>BORRAR</th>
+  </tr>
+  {{#each products}}
+  <tr id="card">
+    <td>{{this._id}}</td>
+    <td>{{this.title}}</td>
+    <td>{{this.description}}</td>
+    <td>S./ {{this.price}}</td>
+    <td><img src="/img/{{this.thumbnail}}" alt="imagen" class="img"></td>
+    <td>{{this.category}}</td>
+    <td>{{this.stock}} u</td>
+    <td>{{this.code}}</td>
+    <td>{{this.status}}</td>
+    <td><button class="delete" value="{{this._id}}">❌</button></td>
+  </tr>
+  {{/each}}
+</table> --}}
+
+{{!-- <table>
+  <tr>
+    <th>PRODUCTO</th>
+    <th>PRECIO</th>
+    <th>THUMBNAIL</th>
+    <th>ELIMINAR</th>
+  </tr>
+  {{#each products}}
+  <tr id="card">
+    <td>{{this.title}}</td>
+    <td>S./ {{this.price}}</td>
+    <td><img src="/img/{{this.thumbnail}}" alt="imagen" class="img"></td>
+    <td><button class="delete" value="{{this._id}}">❌</button></td>
+  </tr>
+  {{/each}}
+</table> --}}
+
+<div class="filter">
+  <select name="" id="" class="filter-select">
+    <option value="" class="filter-select-option">-- Seleccione --</option>
+    <option value="" class="filter-select-option">Precio de menor a mayor</option>
+    <option value="" class="filter-select-option">Precio de mayor a menor</option>
+  </select>
+  <div class="filter-paginate">
+    <h5>Paginas:</h5>
+    <a class="filter-paginate-link" href="/views/products/?page={{prev}}&limit={{limit}}&sort={{sort}}">{{prev}}</a>
+    <a class="filter-paginate-link-focus" href="/views/products/?page={{page}}&limit={{limit}}&sort={{sort}}">{{page}}</a>
+    <a class="filter-paginate-link" href="/views/products/?page={{next}}&limit={{limit}}&sort={{sort}}">{{next}}</a>
+  </div>
+  <a href="/views/carts" style="font-size: 22px;">🛒</a>
+</div>
+
+<div class="container-card">
+  {{#each products}}
+    <div class="card-item">
+      <form action="/api/products/addCart" method="post">
+        <img src="/img/{{this.thumbnail}}" alt="{{this.title}}" class="img">
+        <h2>{{this.title}}</h2>
+        <input type="hidden" name="id" value="{{this._id}}">
+        <input type="hidden" name="title" value="{{this.title}}">
+        <input type="hidden" name="price" value="{{this.price}}">
+        <h3>S/. {{this.price}}</h3>
+        <h4>{{this.stock}} u</h4>
+        <input type="submit" id="addtoCart" value="add to cart"></input>
+      </form>
+      {{!-- <button id="addtoCart">🛒</button> --}}
+    </div>
+  {{/each}}
+</div>
+
+<div class="pagination">
+  <div>
+    <span class="pages">Pagina {{this.page}} de {{this.totalP}}</span>
+  </div>
+  <div style="display: flex; margin: 25px 0px">
+  {{#if hasPrev }}
+    <a href="/views/products/?page={{prev}}&limit={{limit}}&sort={{sort}}" class="button">Prev</a>
+  {{/if}}
+  {{#if hasNext }}
+    <a href="/views/products/?page={{next}}&limit={{limit}}&sort={{sort}}" class="button">Next</a>
+  {{/if}}
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>

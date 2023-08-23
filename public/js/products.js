@@ -24,6 +24,12 @@ const socket = io()
 //   })
 // }
 
+$(document).ready(function() {
+  $(".card-item").click(function() {
+    $(this).hide()
+  })
+})
+
 document.querySelectorAll(".delete").forEach(butt => butt.addEventListener('click', () => {
   // console.log("borrado")
   const deleteProduct = (id) => {

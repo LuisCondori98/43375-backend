@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Preahvihear&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+nav, 
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffda92;
+}
+
+.title-page {
+  color: black;
+}
+
+.navbar-list {
+  display: flex;
+  justify-content: center;
+}
+
+.link {
+  background-color: black;
+  margin: 0 25px;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.login {
+  font-size: 18px;
+  margin: 0px 10px;
+  background-color: rgb(85, 46, 214);
+  padding: 7px;
+  border-radius: 10px;
+  color: white;
+}
+
+.register {
+  font-size: 18px;
+  margin: 0px 10px;
+  color: rgb(0, 0, 0);
+  background-color: darkorange;
+  padding: 7px;
+  border-radius: 10px;
+}

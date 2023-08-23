@@ -1,0 +1,13 @@
+<div class="container-user">
+  <div class="data">
+    <img src="/img/profile.png" alt="">
+    <h2 class="user">Nombres: {{user.name}}</h2>
+    <h2 class="user">Apellidos: {{user.lastname}}</h2>
+    <h2 class="user">e-mail: {{user.email}}</h2>
+    <h2 class="user">Edad: {{user.age}}</h2>
+    <h2></h2>
+    <form action="/api/session/logout" method="post">
+      <input type="submit" value="Logout" class="logout">
+    </form>
+  </div>
+</div>

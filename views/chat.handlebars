@@ -1,16 +1,19 @@
-<div id="title">
-  <h1>Chat MVP</h1>
+<div style="background-color: black; padding: 35px">
+  <h1 style="text-align: center; color: white">
+    CHAT MPV
+  </h1>
+  <h2 id="user" style="color: white">
+  </h2>
 </div>
-<div class="wp-chat">
-  <button id="ingresar">Ingresar</button>
+<p style="font-size: 22px; font-weight: 600; padding: 25px">Chat Box:</p>
+<div id="div-msgs" style="background-color: rgb(50, 90, 47); color: white; padding: 20px; margin: auto; width: 98%">
+  Loading...
 </div>
-
-<p id="user"></p>
-<form id="form" action="" method="POST">
-  <input type="text" class="text" name="message" id="text">
-  <input type="submit" value="Enviar" id="enviar">
+<br /><br />
+<form action="/chat" method="post">
+  <input id="input-msg" style="padding: 15px; width: 30%; margin: 0px 20px" placeholder="Ingrese mensaje..." type="text" name="message" />
 </form>
 
-<script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/chat.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/test-chat.js"></script>

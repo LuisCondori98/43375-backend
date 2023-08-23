@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* .card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  grid-gap: 15px;
+  padding: 15px;
+}
+
+.card {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.card p {
+  font-size: 18px;
+} */
+
+/* table {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+}
+
+
+th {
+  padding: 7px;
+  text-align: center;
+  border: black solid 2px;
+  width: 350px;
+}
+
+td {
+  padding: 7px;
+  text-align: center;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  border-bottom: solid black 2px;
+} */
+
+.filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: end;
+  padding: 15px;
+  gap: 150px;
+}
+
+.filter-select {
+  font-size: 15px;
+  color: rgb(176, 176, 176);
+  border: none;
+  border-bottom: solid black 1px;
+  padding: 3px;
+  border-radius: 7px;
+  transition: all ease-in-out .3s;
+}
+
+.filter-select:focus {
+  outline: none;
+}
+
+.filter-select:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.filter-paginate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  padding: 7px;
+}
+
+.filter-paginate-link {
+  color: rgb(73, 73, 73);
+  padding: 5px;
+}
+
+.filter-paginate-link:hover {
+  background-color: rgb(214, 214, 214);
+  border-radius: 7px;
+}
+
+.filter-paginate-link-focus {
+  color: rgb(255, 255, 255);
+  background-color: rgb(58, 58, 58);
+  border-radius: 7px;
+  padding: 5px;
+}
+
+.container-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  grid-gap: 50px;
+  padding: 75px;
+  margin: 30px 30px;
+}
+
+.card-item {
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 80%;
+  padding: 35px;
+  border-radius: 15px;
+}
+
+#addtoCart {
+  border: none;
+  background-color: white;
+  font-size: 15px;
+  margin-top: 25px;
+}
+
+#addtoCart:hover {
+  text-decoration: underline;
+}
+
+.img {
+  height: 220px;
+}
+
+.pages {
+  font-weight: 600;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  margin: 0px 25px;
+  background-color: rgb(0, 0, 0);
+  width: 60px;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  border-radius: 7px;
+}

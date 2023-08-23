@@ -8,29 +8,17 @@ cartsRouter.get('/', async (req, res) => {
 
   const carts = await cartsModel.find()
 
-  console.log(carts)
-
   return res.json(carts)
 });
 
-cartsRouter.get('/:cid', (req, res) => {
+cartsRouter.get('/:cid', async (req, res) => {
 
   const { cid } = req.params
 
-  res.send(cart.getProductById(parseInt(cid)))
+  // res.send(cart.getProductById(parseInt(cid)))
+
+  res.send(await cartsModel.findOne({_id: cid}));
 });
-
-cartsRouter.post("/", async(req, res) => {
-
-  const body = req.body
-  
-  const data = await cartsModel.create({
-    title: body.title,
-    price: body.price
-  })
-
-  return res.send(data)
-})
 
 cartsRouter.put("/:cid", (req, res) => {
   
@@ -40,8 +28,20 @@ cartsRouter.put("/:cid/products/:pid", (req, res) => {
 
 })
 
-cartsRouter.delete("/:cid", (req, res) => {
+cartsRouter.delete("/:cid", async (req, res) => {
 
+  const {cid} = req.query
+
+  try {
+
+    const prodDelete = await cartsModel.deleteOne(cid)
+
+    return res.status(201).json(prodDelete)
+
+  } catch (err) {
+
+    return res.status(401).json({status: err})
+  }
 })
 
 cartsRouter.delete("/:cid/products/:pid", (req, res) => {

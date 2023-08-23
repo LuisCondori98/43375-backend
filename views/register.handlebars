@@ -1,0 +1,14 @@
+<div class="container-register">
+  <h2>REGISTRAR</h2>
+  <form action="/api/session/register" method="post" class="form-register">
+    <label class="form-label-register" for="">Nombres</label><input class="form-input-register" type="text" name="name">
+    <label class="form-label-register" for="">Apellidos</label><input class="form-input-register" type="text" name="lastname">
+    <label class="form-label-register" for="">Email</label><input class="form-input-register" type="email" name="email">
+    <label class="form-label-register" for="">Edad</label><input class="form-input-register-age" type="number" name="age">
+    <label class="form-label-register" for="">Contraseña</label><input class="form-input-register" type="password" name="password">
+    <input class="form-input-register-button" type="submit" value="Registrarme" id="register-btn">
+  </form>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="/js/register.js"></script>

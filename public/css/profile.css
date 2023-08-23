@@ -1,0 +1,32 @@
+.container-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+  width: 30%;
+  margin: auto;
+}
+
+.data {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 50px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.logout {
+  background-color: rgb(204, 2, 2);
+  margin: 10px 50px;
+  color: white;
+  padding: 7px;
+  border: none;
+  font-size: 18px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  background-color: black;
+  color: white;
+}

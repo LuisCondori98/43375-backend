@@ -3,10 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/img/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/{{style}}">
   <title>{{title}}</title>
 </head>
 <body>
+    <header>
+      <h1><a class="title-page" href="/views">My Web</a></h1>
+      <nav class="navbar">
+        <ul class="navbar-list">
+          {{!-- <li class="navbar-list-li"><a class="link" href="/chat">Chat</a></li> --}}
+        </ul>
+      </nav>
+      <div>
+        <a class="login" href="/views/login">Login</a>
+        <a class="register" href="/views/register">Register</a>
+      </div>
+    </header>
     {{{body}}}
 </body>
 </html>

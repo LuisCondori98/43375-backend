@@ -1,26 +1,23 @@
-import {Router} from "express"
-import msgModel from "../../DAO/mongo/models/messages.model.js"
+import { Router } from "express";
+import msgModel from "../../DAO/mongo/models/messages.model.js";
+import { socketServer } from "../app.js";
 
-export const chatRouter = Router()
+export const chatRouter = Router();
 
 chatRouter.get("/", (req, res) => {
+  
+  return res.status(200).render("chat");
+});
 
-  const data = {
-    title: "CHAT",
-    style: "chat.css"
-  }
+chatRouter.post("/", async (req, res) => {
 
-  return res.render("chat", data)
-})
+  // req.body.user = req.session.user.name
 
-chatRouter.post("/", async(req, res) => {
+  socketServer.emit("name-user", {})
 
-  const body = req.body
+  const data = await msgModel.create(req.body)
 
-  const mesg = await msgModel.create({
-    user: body.user,
-    message: body.message
-  })
+  console.log(data)
 
-  return res.redirect("/chat?")
+  return res.status(200)
 })

@@ -1,59 +1,75 @@
 import { Router } from "express";
 // import { product } from "./productsRouter.router.js";
-import { uploader } from "../utils.js";
 import productsModel from "../../DAO/mongo/models/products.model.js";
 
 export const viewsRouter = Router()
 
-viewsRouter.get("/products", async (req, res) => {
-
-  let limit = parseInt(req.query.limit) || 10
-
-  let page = parseInt(req.query.page) || 1;
-
-  // const sort = await productsModel.aggregate([
-  //       {
-  //         $sort: { price: -1}
-  //       }
-  //     ])
-
-  // console.log(sort)
-
-  const prods = await productsModel.paginate({}, {limit, page})
-
-  // console.log(orders)
-
-  // const prods = await productsModel.find({title: name})
-
-  prods.docs = prods.docs.map(prod => prod.toObject())
-
-  console.log(prods)
-
-  // const prodsObj = prods.map(prods => prods.toObject())
-
-  return res.render("home", {
-    title: "home",
-    products: prods.docs,
-    style: "home.css",
-    hasNext: prods.hasNextPage,
-    hasPrev: prods.hasPrevPage,
-    next: prods.nextPage,
-    prev: prods.prevPage,
-    limit: prods.limit,
-    totalP: prods.totalPages,
-    page: prods.page
-  })
-})
-
 viewsRouter.get("/", async (req, res) => {
 
-  let limit = parseInt(req.query.limit) || 10
+  // let limit = parseInt(req.query.limit) || 10
 
-  let page = parseInt(req.query.page) || 1;
+  // let page = parseInt(req.query.page) || 1;
 
-  const prods = await productsModel.paginate({}, {limit, page})
+  // const prods = await productsModel.paginate({}, {limit, page})
 
-  res.status(201).json(prods)
+  // res.status(201).json(prods)
+
+  // res.render("index")
+  res.render("index")
+})
+
+viewsRouter.get("/products", async (req, res) => {
+
+  if(req.session.user) {
+
+    let limit = parseInt(req.query.limit) || 10
+
+    let page = parseInt(req.query.page) || 1;
+
+    let sort = req.query.sort
+
+    if(sort === "desc") {
+
+      const desc = await productsModel.aggregate([
+        {
+          $sort: { price: -1}
+        }
+      ])
+
+      console.log(desc)
+    }
+
+    const prods = await productsModel.paginate({}, {limit, page, sort})
+
+    console.log(prods)
+
+    // const prods = await productsModel.find({title: name})
+
+    prods.docs = prods.docs.map(prod => prod.toObject())
+
+    // const prodsObj = prods.map(prods => prods.toObject())
+
+    return res.render("products", {
+      title: "Products",
+      products: prods.docs,
+      style: "products.css",
+      hasNext: prods.hasNextPage,
+      hasPrev: prods.hasPrevPage,
+      next: prods.nextPage,
+      prev: prods.prevPage,
+      limit: prods.limit,
+      totalP: prods.totalPages,
+      page: prods.page,
+      sort: prods.sort
+    })
+  }
+
+  if (!req.session.user) {
+
+    console.log("logeate")
+
+    return res.redirect("/views/login")
+  }
 })
 
 viewsRouter.get("/realtimeproducts", async(req, res) => {
@@ -64,29 +80,41 @@ viewsRouter.get("/realtimeproducts", async(req, res) => {
   })
 })
 
-viewsRouter.post("/realtimeproducts", uploader.single("file"), async (req, res) => {
+const sessionMiddleware = (req, res, next) => {
+  if(req.session.user) {
 
-  const data = req.body
-
-  try {
-    const dataSend = await productsModel.create({
-      title: data.title,
-      description: data.description,
-      price: data.price,
-      thumbnail: data.file,
-      category: data.category,
-      stock: data.stock,
-      code: data.code,
-      status: true
-    })
-
-    console.log(req.file)
-
-    return res.status(200).redirect("/views/realtimeproducts")
-  }catch (err) {
-    console.log(err)
+    return res.redirect("/views/profile")
   }
 
-  // res.redirect("/views/realtimeproducts")
+  return next()
+}
 
+viewsRouter.get("/register", sessionMiddleware, (req, res) => {
+
+  return res.render("register", {style: "register.css"})
+})
+
+viewsRouter.get("/login", sessionMiddleware, (req, res) => {
+
+  return res.render("login", { style:"login.css"})
+})
+
+viewsRouter.get("/profile", (req, res, next) => {
+
+  if(!req.session.user) {
+
+    return res.redirect("/views/login")
+  }
+
+  return next()
+}, (req, res) => {
+
+  const user = req.session.user
+
+  return res.render("profile", {user: user, style: "profile.css"})
+})
+
+viewsRouter.get("/carts/:cid", (req, res) => {
+
+  return res.render("carts")
 })

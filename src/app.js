@@ -1,11 +1,15 @@
 import express from 'express';
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
+// import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo"
 import { Server } from "socket.io";
 import { productsRouter } from './routes/productsRouter.router.js';
 import { cartsRouter } from './routes/cartsRouter.router.js';
 import { viewsRouter } from './routes/viewsRouter.router.js';
 import { chatRouter } from './routes/chatRouter.router.js';
+import { sessionRouter } from './routes/sessionRouter.router.js';
 
 const app = express();
 const PORT = 8080
@@ -13,6 +17,20 @@ const PORT = 8080
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"))
+
+// app.use(cookieParser("coderSecret"))
+
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl: "mongodb+srv://luisbarker11:IvkCQGSAr89lPcCh@cluster.p21e02a.mongodb.net/ecommerce?retryWrites=true&w=majority",
+    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    // ttl: 30
+  }),
+  secret: "secretCoder",
+  resave: true,
+  saveUninitialized: true,
+  maxAge: true
+}))
 
 // HANDLEBARS
 app.engine("handlebars", handlebars.engine())
@@ -30,49 +48,28 @@ mongoose.connect(MONGO_CONNECT)
   })
 
 // WEBSOCKET
-const httpServer = app.listen(PORT, () => {
+const httpServer = app.listen(PORT, () => console.log(`listeng on port http://localhost:${PORT}`))
 
-  console.log(`listeng on port http://localhost:${PORT}`)
-})
+export const socketServer = new Server(httpServer)
 
-export const io = new Server(httpServer)
+let msgs = []
 
-io.on("connection", socket => {
+socketServer.on("connection", socket => {
 
-  socket.on("user", (user) => {
-    console.log(`cliente ${user} conectado`)
-  })
+  socket.on("msg_front_to_back", (msg) => {
 
-  socket.on("user", (user) => console.log(user))
+    msgs.push(msg)
 
-  console.log("cliente conectado")
-
-  socket.emit("message", "BIENVENIDO USUARIO")
-
-  // socket.on("disconnect", () => console.log("user disconnected"))
-
-  socket.on("message_prod", (data) => console.log(data))
-
-  // socket.on("selectValue", (data) => console.log(data))
-})
-
-// HOME
-app.get("/", (req, res) => {
-  res.send(`
-    <div style='display: flex; flex-direction: column; align-items: center'>
-      <h1>Routes</h1>
-      <h2>/api/products</h2>
-      <h2>/api/carts</h2>
-      <h2>/views</h2>
-    </div>
-  `)
+    socketServer.emit("listado_msgs", msgs)
+  });
 })
 
 // ENDPOINTS
 app.use("/views", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
-app.use("/chat", chatRouter)
+app.use("/chat", chatRouter);
+app.use("/api/session", sessionRouter)
 
 // ROUTE NOT FOUND
 app.get("*", (req, res) => {

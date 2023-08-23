@@ -2,6 +2,7 @@ import { Router } from "express";
 // import { ProductManager } from "../../DAO/managerFileSystem/ProductManager.js";
 import productsModel from "../../DAO/mongo/models/products.model.js";
 import { uploader } from "../utils.js";
+import cartsModel from "../../DAO/mongo/models/carts.model.js";
 
 export const productsRouter = Router();
 
@@ -67,6 +68,42 @@ productsRouter.post("/", uploader.single("file"), async(req, res) => {
 
     return res.json("prod code repeated")
   }
+})
+
+productsRouter.post("/realtimeproducts", uploader.single("file"), async (req, res) => {
+
+  const data = req.body
+
+  try {
+    const dataSend = await productsModel.create({
+      title: data.title,
+      description: data.description,
+      price: data.price,
+      thumbnail: data.file,
+      category: data.category,
+      stock: data.stock,
+      code: data.code,
+      status: true
+    })
+
+    console.log(req.file)
+
+    return res.status(200).redirect("/views/realtimeproducts")
+  }catch (err) {
+    console.log(err)
+  }
+
+  // res.redirect("/views/realtimeproducts")
+
+})
+
+productsRouter.post("/addCart", async (req, res) => {
+
+  const addCart = await cartsModel.create(req.body)
+
+  // cartsModel.product.push(addCart)
+
+  return res.json(req.body)
 })
 
 productsRouter.put("/:pid", async (req, res) => {
