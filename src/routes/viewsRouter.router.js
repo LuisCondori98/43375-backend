@@ -1,20 +1,10 @@
 import { Router } from "express";
-// import { product } from "./productsRouter.router.js";
 import productsModel from "../../DAO/mongo/models/products.model.js";
 
 export const viewsRouter = Router()
 
 viewsRouter.get("/", async (req, res) => {
 
-  // let limit = parseInt(req.query.limit) || 10
-
-  // let page = parseInt(req.query.page) || 1;
-
-  // const prods = await productsModel.paginate({}, {limit, page})
-
-  // res.status(201).json(prods)
-
-  // res.render("index")
   res.render("index")
 })
 
@@ -35,13 +25,9 @@ viewsRouter.get("/products", async (req, res) => {
           $sort: { price: -1}
         }
       ])
-
-      console.log(desc)
     }
 
     const prods = await productsModel.paginate({}, {limit, page, sort})
-
-    console.log(prods)
 
     // const prods = await productsModel.find({title: name})
 
@@ -72,7 +58,20 @@ viewsRouter.get("/products", async (req, res) => {
   }
 })
 
-viewsRouter.get("/realtimeproducts", async(req, res) => {
+const admin = (req, res, next) => {
+
+  if(req.session.user.admin) {
+    console.log("eres admin")
+  }
+  else {
+    console.log("no eres admin")
+    return res.redirect("/views/products")
+  }
+  
+  next()
+}
+
+viewsRouter.get("/realtimeproducts", admin, async(req, res) => {
 
   return res.render("realTimeProducts", {
     title: "products",
@@ -81,6 +80,7 @@ viewsRouter.get("/realtimeproducts", async(req, res) => {
 })
 
 const sessionMiddleware = (req, res, next) => {
+
   if(req.session.user) {
 
     return res.redirect("/views/profile")

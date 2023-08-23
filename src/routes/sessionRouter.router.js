@@ -45,6 +45,12 @@ sessionRouter.post("/login", async (req, res) => {
 
   req.session.user = user
 
+  req.session.user.admin = false
+
+  if(req.session.user.email == "adminCoder@coder.com") {
+    req.session.user.admin = true
+  }
+
   delete user.password
 
   return res.redirect("/views/products")

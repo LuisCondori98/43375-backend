@@ -7,7 +7,6 @@ export const userSchema = mongoose.Schema({
   email: String,
   age: Number,
   password: String
-
 })
 
 const userModel = mongoose.model("user", userSchema)
