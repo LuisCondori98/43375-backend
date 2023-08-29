@@ -3,10 +3,12 @@ import productsModel from "../../DAO/mongo/models/products.model.js";
 
 export const viewsRouter = Router()
 
+
 viewsRouter.get("/", async (req, res) => {
 
-  res.render("index")
+  res.render("index", {style: "index.css"})
 })
+
 
 viewsRouter.get("/products", async (req, res) => {
 
@@ -58,6 +60,7 @@ viewsRouter.get("/products", async (req, res) => {
   }
 })
 
+
 const admin = (req, res, next) => {
 
   if(req.session.user.admin) {
@@ -71,6 +74,7 @@ const admin = (req, res, next) => {
   next()
 }
 
+
 viewsRouter.get("/realtimeproducts", admin, async(req, res) => {
 
   return res.render("realTimeProducts", {
@@ -78,6 +82,7 @@ viewsRouter.get("/realtimeproducts", admin, async(req, res) => {
     style: "realtimeproducts.css"
   })
 })
+
 
 const sessionMiddleware = (req, res, next) => {
 
@@ -89,15 +94,24 @@ const sessionMiddleware = (req, res, next) => {
   return next()
 }
 
+
 viewsRouter.get("/register", sessionMiddleware, (req, res) => {
 
-  return res.render("register", {style: "register.css"})
+  return res.render("register", {
+    title: "Registro",
+    style: "register.css"
+  })
 })
+
 
 viewsRouter.get("/login", sessionMiddleware, (req, res) => {
 
-  return res.render("login", { style:"login.css"})
+  return res.render("login", {
+    title: "Login",
+    style:"login.css"
+  })
 })
+
 
 viewsRouter.get("/profile", (req, res, next) => {
 
@@ -111,10 +125,16 @@ viewsRouter.get("/profile", (req, res, next) => {
 
   const user = req.session.user
 
-  return res.render("profile", {user: user, style: "profile.css"})
+  return res.render("profile", {user: user, style: "profile.css", title: "Perfil"})
 })
+
 
 viewsRouter.get("/carts/:cid", (req, res) => {
 
   return res.render("carts")
+})
+
+
+viewsRouter.get("/recovery-password", (req, res) => {
+   return res.render("recovery-password", {title: "Recovery Password", style: "recovery-password.css"})
 })

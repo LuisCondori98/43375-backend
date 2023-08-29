@@ -1,12 +1,15 @@
 import {Router} from "express"
 import userModel from "../../DAO/mongo/models/user.model.js"
+import { createHash, isValidPassword } from "../utils.js"
 
 export const sessionRouter = Router()
+
 
 sessionRouter.get("/", (req, res) => {
 
   return res.json(req.session)
 })
+
 
 sessionRouter.post("/register", async (req, res) => {
 
@@ -17,7 +20,11 @@ sessionRouter.post("/register", async (req, res) => {
     return res.redirect("/views/login")
   }else {
 
+    req.body.password = createHash(req.body.password)
+
     const dataUser = await userModel.create(req.body)
+
+    console.log(dataUser)
 
     setTimeout(() => {
       return res.redirect("/views/login")
@@ -25,21 +32,29 @@ sessionRouter.post("/register", async (req, res) => {
   }
 })
 
+
 sessionRouter.post("/login", async (req, res) => {
 
   let user = await userModel.findOne({ email: req.body.email})
 
-  if(!user || user.password !== req.body.password) {
-    console.log("failed to login")
+  console.log(user)
 
-    return res.redirect("/views/login")
-  }
+  // if(!user || user.password !== req.body.password) {
+  //   console.log("failed to login")
+
+  //   return res.redirect("/views/login")
+  // }
 
   // if(user.password !== req.body.password) {
   //   console.log("password not found")
 
   //   return res.status(401).redirect("/views/login")
   // }
+
+  if(!isValidPassword(req.body.password, user.password)) {
+
+    return res.status(403).redirect("/views/login")
+  }
 
   user = user.toObject()
 
@@ -55,6 +70,7 @@ sessionRouter.post("/login", async (req, res) => {
 
   return res.redirect("/views/products")
 })
+
 
 sessionRouter.post("/logout", async (req, res) => {
 

@@ -5,8 +5,13 @@ import { socketServer } from "../app.js";
 export const chatRouter = Router();
 
 chatRouter.get("/", (req, res) => {
+
+  if(!req.session.user) {
+    
+    return res.redirect("/views/login")
+  }
   
-  return res.status(200).render("chat");
+  return res.status(200).render("chat", {title: "Chat-MPV", style: "chat.css"});
 });
 
 chatRouter.post("/", async (req, res) => {

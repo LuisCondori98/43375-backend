@@ -24,12 +24,12 @@ app.use(session({
   store: MongoStore.create({
     mongoUrl: "mongodb+srv://luisbarker11:IvkCQGSAr89lPcCh@cluster.p21e02a.mongodb.net/ecommerce?retryWrites=true&w=majority",
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-    // ttl: 30
+    ttl: 30
   }),
   secret: "secretCoder",
   resave: true,
   saveUninitialized: true,
-  maxAge: true
+  // maxAge: true
 }))
 
 // HANDLEBARS

@@ -29,23 +29,6 @@
   {{/each}}
 </table> --}}
 
-{{!-- <table>
-  <tr>
-    <th>PRODUCTO</th>
-    <th>PRECIO</th>
-    <th>THUMBNAIL</th>
-    <th>ELIMINAR</th>
-  </tr>
-  {{#each products}}
-  <tr id="card">
-    <td>{{this.title}}</td>
-    <td>S./ {{this.price}}</td>
-    <td><img src="/img/{{this.thumbnail}}" alt="imagen" class="img"></td>
-    <td><button class="delete" value="{{this._id}}">❌</button></td>
-  </tr>
-  {{/each}}
-</table> --}}
-
 <div class="filter">
   <select name="" id="" class="filter-select">
     <option value="" class="filter-select-option">-- Seleccione --</option>
@@ -72,9 +55,7 @@
         <input type="hidden" name="price" value="{{this.price}}">
         <h3>S/. {{this.price}}</h3>
         <h4>{{this.stock}} u</h4>
-        <input type="submit" id="addtoCart" value="add to cart"></input>
       </form>
-      {{!-- <button id="addtoCart">🛒</button> --}}
     </div>
   {{/each}}
 </div>

@@ -51,11 +51,11 @@ td {
 
 .filter {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   align-items: center;
   text-align: end;
   padding: 15px;
-  gap: 150px;
 }
 
 .filter-select {
@@ -103,6 +103,7 @@ td {
 
 .container-card {
   display: grid;
+  flex-wrap: wrap;
   grid-template-columns: repeat(3, 1fr);
   place-items: center;
   grid-gap: 50px;
@@ -131,6 +132,11 @@ td {
 
 .img {
   height: 220px;
+  transition: all ease-in-out .3s;
+}
+
+.img:hover {
+  transform: scale(1.1);
 }
 
 .pages {

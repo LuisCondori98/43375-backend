@@ -35,16 +35,17 @@ chatBox.addEventListener("keyup", ({ key }) => {
       msg: chatBox.value,
       user: userIngresado,
     });
+    chatBox.value = ""
   }
 });
 
 socket.on("listado_msgs", (msgs) => {
 
-  const box = document.getElementById("div-msgs")
+  const box = document.getElementById("box-msg")
 
   let format = "";
 
-  msgs.forEach(msg => format = format + "<p style='color: white; font-weight: 900; font-size: 20px; margin: 0px 5px'>" + msg.user + " :</p><br>" + "<p style='font-size: 18px; margin: 0px 20px'> " + msg.msg + "</p><br>");
+  msgs.forEach(msg => format = format + "<p style='color: white; font-weight: 900; font-size: 20px'>" + msg.user + " :</p>" + "<p style='font-size: 18px; margin: 0px 20px'> " + msg.msg + "</p>");
 
   box.innerHTML = format
 })

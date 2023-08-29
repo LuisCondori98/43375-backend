@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Preahvihear', sans-serif;
 }
 
 nav, 
@@ -20,7 +21,7 @@ header {
   justify-content: space-around;
   align-items: center;
   padding: 20px;
-  background-color: #ffda92;
+  background-color: #ffe5b1;
 }
 
 .title-page {
