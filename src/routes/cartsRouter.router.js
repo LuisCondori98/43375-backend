@@ -11,6 +11,18 @@ cartsRouter.get('/', async (req, res) => {
   return res.json(carts)
 });
 
+cartsRouter.post('/', async (req, res) => {
+
+  const prod = await cartsModel.create({
+    product: req.body,
+    quantity: 1
+  })
+
+  console.log(prod)
+
+  return res.json(req.body)
+})
+
 cartsRouter.get('/:cid', async (req, res) => {
 
   const { cid } = req.params

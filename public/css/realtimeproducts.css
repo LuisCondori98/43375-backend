@@ -19,7 +19,7 @@ form {
   justify-content: center;
   width: 45%;
   margin: auto;
-  background-color: rgb(58, 35, 117);
+  background-color: rgb(146, 132, 180);
   border-radius: 10px;
 }
 
@@ -41,6 +41,7 @@ input {
 
 input:focus {
   background-color: rgb(255, 248, 224);
+  outline: none;
 }
 
 .file {

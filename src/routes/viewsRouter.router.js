@@ -1,5 +1,6 @@
 import { Router } from "express";
 import productsModel from "../../DAO/mongo/models/products.model.js";
+import cartsModel from "../../DAO/mongo/models/carts.model.js";
 
 export const viewsRouter = Router()
 
@@ -12,61 +13,59 @@ viewsRouter.get("/", async (req, res) => {
 
 viewsRouter.get("/products", async (req, res) => {
 
-  if(req.session.user) {
-
-    let limit = parseInt(req.query.limit) || 10
-
-    let page = parseInt(req.query.page) || 1;
-
-    let sort = req.query.sort
-
-    if(sort === "desc") {
-
-      const desc = await productsModel.aggregate([
-        {
-          $sort: { price: -1}
-        }
-      ])
-    }
-
-    const prods = await productsModel.paginate({}, {limit, page, sort})
-
-    // const prods = await productsModel.find({title: name})
-
-    prods.docs = prods.docs.map(prod => prod.toObject())
-
-    // const prodsObj = prods.map(prods => prods.toObject())
-
-    return res.render("products", {
-      title: "Products",
-      products: prods.docs,
-      style: "products.css",
-      hasNext: prods.hasNextPage,
-      hasPrev: prods.hasPrevPage,
-      next: prods.nextPage,
-      prev: prods.prevPage,
-      limit: prods.limit,
-      totalP: prods.totalPages,
-      page: prods.page,
-      sort: prods.sort
-    })
-  }
-
   if (!req.session.user) {
 
     console.log("logeate")
 
     return res.redirect("/views/login")
   }
+
+  let limit = parseInt(req.query.limit) || 10
+
+  let page = parseInt(req.query.page) || 1;
+
+  let sort = req.query.sort
+
+  if(sort === "desc") {
+
+    const desc = await productsModel.aggregate([
+      {
+        $sort: { price: -1}
+      }
+    ])
+  }
+
+  const prods = await productsModel.paginate({}, {limit, page, sort})
+
+  // const prods = await productsModel.find({title: name})
+
+  prods.docs = prods.docs.map(prod => prod.toObject())
+
+  // const prodsObj = prods.map(prods => prods.toObject())
+
+  return res.render("products", {
+    title: "Products",
+    products: prods.docs,
+    style: "products.css",
+    hasNext: prods.hasNextPage,
+    hasPrev: prods.hasPrevPage,
+    next: prods.nextPage,
+    prev: prods.prevPage,
+    limit: prods.limit,
+    totalP: prods.totalPages,
+    page: prods.page,
+    sort: prods.sort
+  })
 })
 
 
 const admin = (req, res, next) => {
 
-  if(req.session.user.admin) {
-    console.log("eres admin")
+  if(!req.session.user) {
+    return res.redirect("/views/login")
   }
-  else {
+
+  if(!req.session.user.admin) {
     console.log("no eres admin")
     return res.redirect("/views/products")
   }
@@ -125,16 +124,48 @@ viewsRouter.get("/profile", (req, res, next) => {
 
   const user = req.session.user
 
-  return res.render("profile", {user: user, style: "profile.css", title: "Perfil"})
+  return res.render("profile", {
+    user: user, style: "profile.css",
+    title: "Perfil"
+  })
 })
 
 
-viewsRouter.get("/carts/:cid", (req, res) => {
+viewsRouter.get("/carts", async (req, res) => {
 
-  return res.render("carts")
+  const cart = await cartsModel.find()
+
+  // console.log(...cart)
+
+  return res.json(cart)
+
+  return res.render("carts", {})
 })
+
+
+// viewsRouter.get("/carts/:cid", async (req, res) => {
+
+//   const cid = req.params.cid
+
+//   const cart = await cartsModel.findOne({_id: cid})
+
+//   if(!cart) {
+
+//     return res.redirect("/views/login")
+//   }
+
+//   const arr = cart.product
+
+//   console.log(arr)
+
+//   return res.render("carts", {arr: arr})
+// })
 
 
 viewsRouter.get("/recovery-password", (req, res) => {
-   return res.render("recovery-password", {title: "Recovery Password", style: "recovery-password.css"})
+  
+   return res.render("recovery-password", {
+    title: "Recovery Password",
+    style: "recovery-password.css"
+  })
 })

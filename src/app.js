@@ -2,8 +2,11 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 // import cookieParser from "cookie-parser";
-import session from "express-session";
 import MongoStore from "connect-mongo"
+import session from "express-session";
+import passport from "passport";
+// import flash from "connect-flash"
+import { initializePassport } from '../config/passport.config.js';
 import { Server } from "socket.io";
 import { productsRouter } from './routes/productsRouter.router.js';
 import { cartsRouter } from './routes/cartsRouter.router.js';
@@ -16,6 +19,10 @@ const PORT = 8080
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// app.use(flash())
+
+// CARPETA PUBLIC ESTATICO
 app.use(express.static("public"))
 
 // app.use(cookieParser("coderSecret"))
@@ -31,6 +38,10 @@ app.use(session({
   saveUninitialized: true,
   // maxAge: true
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 // HANDLEBARS
 app.engine("handlebars", handlebars.engine())
@@ -74,9 +85,9 @@ app.use("/api/session", sessionRouter)
 // ROUTE NOT FOUND
 app.get("*", (req, res) => {
   res.send(`
-    <div style='display: flex; flex-direction: column; justify-content: center; align-items: center'>
+    <div style='display: flex; flex-direction: column; justify-content: center; align-items: center; height: 500px'>
       <h1>404</h1>
-      <h2>NOT FOUND</h2>
+      <h3>NOT FOUND</h3>
     </div>
   `)
 })

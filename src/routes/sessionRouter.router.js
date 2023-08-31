@@ -1,5 +1,6 @@
 import {Router} from "express"
 import userModel from "../../DAO/mongo/models/user.model.js"
+import passport from "passport"
 import { createHash, isValidPassword } from "../utils.js"
 
 export const sessionRouter = Router()
@@ -11,64 +12,71 @@ sessionRouter.get("/", (req, res) => {
 })
 
 
-sessionRouter.post("/register", async (req, res) => {
+sessionRouter.post("/register",
+  passport.authenticate("register", {failureRedirect: "/failregister"}),
+  async (req, res) => {
 
-  if(req.body.name === "" || req.body.lastname === "" || req.body.email === "" || req.body.age === "" || req.body.password === "") {
+    res.send({status: "succes", msg: "user registered"})
 
-    console.log("ingrese datos")
+  // if(req.body.name === "" || req.body.lastname === "" || req.body.email === "" || req.body.age === "" || req.body.password === "") {
 
-    return res.redirect("/views/login")
-  }else {
-
-    req.body.password = createHash(req.body.password)
-
-    const dataUser = await userModel.create(req.body)
-
-    console.log(dataUser)
-
-    setTimeout(() => {
-      return res.redirect("/views/login")
-    }, 3000)
-  }
-})
-
-
-sessionRouter.post("/login", async (req, res) => {
-
-  let user = await userModel.findOne({ email: req.body.email})
-
-  console.log(user)
-
-  // if(!user || user.password !== req.body.password) {
-  //   console.log("failed to login")
+  //   console.log("ingrese datos")
 
   //   return res.redirect("/views/login")
   // }
 
-  // if(user.password !== req.body.password) {
-  //   console.log("password not found")
+  // req.body.password = createHash(req.body.password)
 
-  //   return res.status(401).redirect("/views/login")
+  // const dataUser = await userModel.create(req.body)
+
+  // console.log(dataUser)
+
+  // return res.redirect("/views/login")
+
+})
+
+
+sessionRouter.get("/failregister", (req, res) => {
+
+  return res.json("error al registrarse")
+})
+
+
+sessionRouter.post("/login",
+  passport.authenticate("login", {failureRedirect: "/faillogin"}),
+  async (req, res) => {
+
+    // return res.json(req.user)
+
+  // let user = await userModel.findOne({ email: req.body.email })
+
+  // if(!user) return res.redirect("/views/login")
+
+  // if(!isValidPassword(req.body.password, user.password)) {
+
+  //   return res.status(403).redirect("/views/login")
   // }
 
-  if(!isValidPassword(req.body.password, user.password)) {
+  // user = user.toObject()
 
-    return res.status(403).redirect("/views/login")
-  }
+  // req.session.user = user
 
-  user = user.toObject()
+  // req.session.user.admin = false
 
-  req.session.user = user
+  // if(req.session.user.email == "adminCoder@coder.com") {
 
-  req.session.user.admin = false
+  //   req.session.user.admin = true
+  // }
 
-  if(req.session.user.email == "adminCoder@coder.com") {
-    req.session.user.admin = true
-  }
-
-  delete user.password
+  // delete user.password
 
   return res.redirect("/views/products")
+})
+
+
+sessionRouter.get("/faillogin", (req, res) => {
+
+  return res.json("error al iniciar sesion")
 })
 
 
@@ -87,4 +95,22 @@ sessionRouter.post("/logout", async (req, res) => {
     
     return res.json({ msg: 'no user to log out!' })
   }
+})
+
+sessionRouter.post("/recovery-password", async (req, res) => {
+
+  const user = await userModel.findOne({email: req.body.email})
+
+  if(!user) {
+
+    console.log("user not found")
+
+    return res.redirect("/views/recovery-password")
+  }
+
+  const newPassword = createHash(req.body.password)
+
+  await userModel.updateOne({ email: user.email }, { password: newPassword })
+
+  return res.redirect("/views/login")
 })

@@ -37,9 +37,9 @@
   </select>
   <div class="filter-paginate">
     <h5>Paginas:</h5>
-    <a class="filter-paginate-link" href="/views/products/?page={{prev}}&limit={{limit}}&sort={{sort}}">{{prev}}</a>
-    <a class="filter-paginate-link-focus" href="/views/products/?page={{page}}&limit={{limit}}&sort={{sort}}">{{page}}</a>
-    <a class="filter-paginate-link" href="/views/products/?page={{next}}&limit={{limit}}&sort={{sort}}">{{next}}</a>
+    <a class="filter-paginate-link" href="/views/products/?page={{prev}}&limit={{limit}}">{{prev}}</a>
+    <a class="filter-paginate-link-focus" href="/views/products/?page={{page}}&limit={{limit}}">{{page}}</a>
+    <a class="filter-paginate-link" href="/views/products/?page={{next}}&limit={{limit}}">{{next}}</a>
   </div>
   <a href="/views/carts" style="font-size: 22px;">🛒</a>
 </div>
@@ -47,14 +47,16 @@
 <div class="container-card">
   {{#each products}}
     <div class="card-item">
-      <form action="/api/products/addCart" method="post">
+      <form action="/api/carts" method="post">
         <img src="/img/{{this.thumbnail}}" alt="{{this.title}}" class="img">
         <h2>{{this.title}}</h2>
         <input type="hidden" name="id" value="{{this._id}}">
+        <input type="hidden" name="thumbnail" value="{{this.thumbnail}}">
         <input type="hidden" name="title" value="{{this.title}}">
         <input type="hidden" name="price" value="{{this.price}}">
         <h3>S/. {{this.price}}</h3>
         <h4>{{this.stock}} u</h4>
+        <button type="submit">Agregar al carrito</a>
       </form>
     </div>
   {{/each}}
@@ -66,10 +68,10 @@
   </div>
   <div style="display: flex; margin: 25px 0px">
   {{#if hasPrev }}
-    <a href="/views/products/?page={{prev}}&limit={{limit}}&sort={{sort}}" class="button">Prev</a>
+    <a href="/views/products/?page={{prev}}&limit={{limit}}" class="button">Prev</a>
   {{/if}}
   {{#if hasNext }}
-    <a href="/views/products/?page={{next}}&limit={{limit}}&sort={{sort}}" class="button">Next</a>
+    <a href="/views/products/?page={{next}}&limit={{limit}}" class="button">Next</a>
   {{/if}}
   </div>
 </div>

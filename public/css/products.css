@@ -82,11 +82,15 @@ td {
   gap: 10px;
   font-size: 20px;
   padding: 7px;
+  text-align: center;
 }
 
 .filter-paginate-link {
   color: rgb(73, 73, 73);
   padding: 5px;
+  width: 20px;
+  height: 40px;
+  width: 40px;
 }
 
 .filter-paginate-link:hover {
@@ -97,8 +101,10 @@ td {
 .filter-paginate-link-focus {
   color: rgb(255, 255, 255);
   background-color: rgb(58, 58, 58);
-  border-radius: 7px;
+  border-radius: 20%;
   padding: 5px;
+  height: 40px;
+  width: 40px;
 }
 
 .container-card {
