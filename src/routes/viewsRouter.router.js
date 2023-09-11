@@ -13,7 +13,7 @@ viewsRouter.get("/", async (req, res) => {
 
 viewsRouter.get("/products", async (req, res) => {
 
-  if (!req.session.user) {
+  if (!req.user) {
 
     console.log("logeate")
 
@@ -85,7 +85,7 @@ viewsRouter.get("/realtimeproducts", admin, async(req, res) => {
 
 const sessionMiddleware = (req, res, next) => {
 
-  if(req.session.user) {
+  if(req.user) {
 
     return res.redirect("/views/profile")
   }
@@ -107,14 +107,14 @@ viewsRouter.get("/login", sessionMiddleware, (req, res) => {
 
   return res.render("login", {
     title: "Login",
-    style:"login.css"
+    style:"login.css",
   })
 })
 
 
 viewsRouter.get("/profile", (req, res, next) => {
 
-  if(!req.session.user) {
+  if(!req.user) {
 
     return res.redirect("/views/login")
   }
@@ -122,10 +122,11 @@ viewsRouter.get("/profile", (req, res, next) => {
   return next()
 }, (req, res) => {
 
-  const user = req.session.user
+  const user = req.user
 
   return res.render("profile", {
-    user: user, style: "profile.css",
+    user: user,
+    style: "profile.css",
     title: "Perfil"
   })
 })
@@ -135,11 +136,9 @@ viewsRouter.get("/carts", async (req, res) => {
 
   const cart = await cartsModel.find()
 
-  // console.log(...cart)
+  return res.render("carts", {cart: cart})
 
-  return res.json(cart)
-
-  return res.render("carts", {})
+  // return res.render("carts", {props: props})
 })
 
 

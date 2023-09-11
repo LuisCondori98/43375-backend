@@ -1,11 +1,11 @@
 import express from 'express';
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo"
 import session from "express-session";
 import passport from "passport";
-// import flash from "connect-flash"
+import flash from "connect-flash"
 import { initializePassport } from '../config/passport.config.js';
 import { Server } from "socket.io";
 import { productsRouter } from './routes/productsRouter.router.js';
@@ -14,18 +14,20 @@ import { viewsRouter } from './routes/viewsRouter.router.js';
 import { chatRouter } from './routes/chatRouter.router.js';
 import { sessionRouter } from './routes/sessionRouter.router.js';
 
+import { UserManager } from "../DAO/managerMongo/UserManager.js"
+
 const app = express();
 const PORT = 8080
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(flash())
+app.use(flash())
 
 // CARPETA PUBLIC ESTATICO
 app.use(express.static("public"))
 
-// app.use(cookieParser("coderSecret"))
+app.use(cookieParser("coderSecret"))
 
 app.use(session({
   store: MongoStore.create({
@@ -54,8 +56,8 @@ const MONGO_CONNECT = "mongodb+srv://luisbarker11:IvkCQGSAr89lPcCh@cluster.p21e0
 mongoose.connect(MONGO_CONNECT)
   .then(() => {
     console.log("Mongo Connected")
-  }).catch(err => {
-    console.log(err)
+  }).catch(error => {
+    console.log("Failed connect to mongo " + error)
   })
 
 // WEBSOCKET
@@ -81,6 +83,15 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/chat", chatRouter);
 app.use("/api/session", sessionRouter)
+
+app.get("/prueba", async (req, res) => {
+
+  const user = new UserManager()
+
+  const add = await user.getUsers()
+
+  return res.json(add)
+})
 
 // ROUTE NOT FOUND
 app.get("*", (req, res) => {

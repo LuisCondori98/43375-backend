@@ -1,80 +1,21 @@
 import passport from "passport"
-import passportLocal from "passport-local"
 import userModel from "../DAO/mongo/models/user.model.js"
-import { createHash, isValidPassword } from "../src/utils.js"
-
-const LocalStrategy = passportLocal.Strategy
+import { registerLocalStrategy } from "../strategies/registerStrategy.js"
+import { loginLocalStrategy } from "../strategies/loginStrategy.js"
+import { gitHubStrategy } from "../strategies/githubStrategy.js"
+import { generateToken } from "../src/utils.js"
+import { faceStrategy } from "../strategies/facebookStrategy.js"
 
 export const initializePassport = () => {
 
-  passport.use("register", new LocalStrategy(
-    {passReqToCallback: true, usernameField: "email"},
-    async (req, username, password, done) => {
-      try {
-
-        const user = await userModel.findOne({ email: username })
-
-        if(user) {
-
-          console.log("usuario ya existe")
-
-          return done(null, false)
-        }
-
-        const body = req.body
-
-        body.password = createHash(body.password)
-
-        console.log(body)
-
-        const newUser = await userModel.create(body)
-
-        return done(null, newUser)
-
-      } catch (err) {
-
-        return done(err)
-      }
-    }
-  ))
-
-  passport.use("login", new LocalStrategy(
-    {usernameField: "email"},
-    async (email, password, done) => {
-
-      try {
-
-        let user = await userModel.findOne({ email: email })
-
-        if(!user) {
-
-          console.log("usuario no existe en el sistema")
-
-          return done(null, false)
-        }
-
-        if(!isValidPassword(password, user.password)) {
-
-          console.log("datos incorrectos")
-
-          return done(null, false)
-
-        }
-
-        user = user.toObject()
-
-        delete user.password
-
-        done(null, user)
-
-      } catch (e) {
-
-        return done(e)
-      }
-    }
-  ))
+  passport.use('github', gitHubStrategy)
+  passport.use("facebook", faceStrategy)
+  passport.use('login', loginLocalStrategy)
+  passport.use('register', registerLocalStrategy)
 
   passport.serializeUser((user, done) => {
+
+    console.log({user})
 
     console.log("serialize user")
 
@@ -85,7 +26,17 @@ export const initializePassport = () => {
 
     console.log("deserialize user")
 
-    const user = await userModel.findOne(id);
+    let user = await userModel.findOne({_id : id});
+
+    // let user = await userModel.findById(id);
+
+    const token = generateToken(user)
+
+    user = user.toObject()
+
+    user.access_token = token
+    
+    // console.log({ user })
 
     done(null, user)
   })

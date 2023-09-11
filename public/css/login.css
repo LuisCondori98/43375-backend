@@ -1,11 +1,15 @@
+h2 {
+  text-align: center;
+}
+
 .container-login {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 500px;
-  width: 30%;
-  margin: auto;
+  height: 700px;
+  /* width: 100%; */
+  /* margin: auto; */
   gap: 25px;
   font-family: 'Preahvihear', sans-serif;
 }
@@ -64,4 +68,31 @@
 
 .recovery-pass:hover {
   text-decoration: underline;
+}
+
+.github {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  gap: 15px;
+  padding: 7px;
+  transition: all ease-in-out .3s;
+  border-radius: 15px;
+  box-shadow: rgba(122, 122, 122, 0.2) 0px 2px 8px 0px;
+}
+
+.github:hover {
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
+}
+
+.link-github {
+  color: black;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.img-github {
+  height: 50px;
 }

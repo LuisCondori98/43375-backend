@@ -16,7 +16,9 @@ sessionRouter.post("/register",
   passport.authenticate("register", {failureRedirect: "/failregister"}),
   async (req, res) => {
 
-    res.send({status: "succes", msg: "user registered"})
+    // res.send({status: "succes", msg: "user registered"})
+
+    return res.redirect("/views/login")
 
   // if(req.body.name === "" || req.body.lastname === "" || req.body.email === "" || req.body.age === "" || req.body.password === "") {
 
@@ -43,12 +45,14 @@ sessionRouter.get("/failregister", (req, res) => {
 
 
 sessionRouter.post("/login",
-  passport.authenticate("login", {failureRedirect: "/faillogin"}),
+  passport.authenticate("login", {failureRedirect: "/faillogin", failureFlash: true}),
   async (req, res) => {
 
     // return res.json(req.user)
 
   // let user = await userModel.findOne({ email: req.body.email })
+
+  // const user = req.user
 
   // if(!user) return res.redirect("/views/login")
 
@@ -70,6 +74,8 @@ sessionRouter.post("/login",
 
   // delete user.password
 
+  // return res.json(req.user)
+
   return res.redirect("/views/products")
 })
 
@@ -82,7 +88,7 @@ sessionRouter.get("/faillogin", (req, res) => {
 
 sessionRouter.post("/logout", async (req, res) => {
 
-  const user = req.session.user
+  const user = req.user
 
   if (user) {
 
@@ -96,6 +102,7 @@ sessionRouter.post("/logout", async (req, res) => {
     return res.json({ msg: 'no user to log out!' })
   }
 })
+
 
 sessionRouter.post("/recovery-password", async (req, res) => {
 
@@ -113,4 +120,31 @@ sessionRouter.post("/recovery-password", async (req, res) => {
   await userModel.updateOne({ email: user.email }, { password: newPassword })
 
   return res.redirect("/views/login")
+})
+
+
+sessionRouter.get("/github", passport.authenticate("github", {scope: ["user: email"]}), async (req, res) => {
+  
+  // return res.json("bienvenido")
+})
+
+sessionRouter.get("/github-callback", passport.authenticate("github", {failureRedirect: "/login"}), async (req,res) => {
+
+  // req.session.user = req.user
+
+  // res.redirect("/")
+
+  return res.redirect("/views/products")
+})
+
+sessionRouter.get("/facebook", passport.authenticate("facebook"), async (req, res) => {
+
+
+})
+
+sessionRouter.get("/facebook-callback", passport.authenticate("facebook", {failureRedirect: "/login"}), async (req, res) => {
+
+  // return res.json(req.user)
+
+  return res.redirect("/views/products")
 })

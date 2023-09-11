@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { uploader } from "../utils.js";
 import productsModel from "../../DAO/mongo/models/products.model.js";
+// import { ProductManager } from "../../DAO/mongo/managerMongo/ProductManager.js";
 
 export const productsRouter = Router();
 
+// const product = new ProductManager()
 
 productsRouter.get("/", async (req, res) => {
 
