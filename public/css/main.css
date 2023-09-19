@@ -34,7 +34,7 @@ header {
 }
 
 .link {
-  background-color: black;
+  background-color: rgb(43, 43, 43);
   margin: 0 25px;
   color: white;
   padding: 10px;
@@ -44,7 +44,7 @@ header {
 .login {
   font-size: 18px;
   margin: 0px 10px;
-  background-color: rgb(85, 46, 214);
+  background-color: rgb(57, 12, 204);
   padding: 7px;
   border-radius: 10px;
   color: white;
@@ -54,7 +54,8 @@ header {
   font-size: 18px;
   margin: 0px 10px;
   color: rgb(0, 0, 0);
-  background-color: darkorange;
+  background-color: rgb(252, 153, 33);
+  color: white;
   padding: 7px;
   border-radius: 10px;
 }

@@ -31,8 +31,6 @@ export const loginLocalStrategy = new LocalStrategy(
 
         user = user.toObject()
 
-        console.log(user)
-
         delete user.password
 
         done(null, user)

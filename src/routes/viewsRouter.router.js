@@ -26,13 +26,15 @@ viewsRouter.get("/products", async (req, res) => {
 
   let sort = req.query.sort
 
-  if(sort === "desc") {
+  if(sort == "desc") {
 
     const desc = await productsModel.aggregate([
       {
-        $sort: { price: -1}
+        $sort: { price: 1}
       }
     ])
+
+    console.log(desc)
   }
 
   const prods = await productsModel.paginate({}, {limit, page, sort})
@@ -61,11 +63,11 @@ viewsRouter.get("/products", async (req, res) => {
 
 const admin = (req, res, next) => {
 
-  if(!req.session.user) {
+  if(!req.user) {
     return res.redirect("/views/login")
   }
 
-  if(!req.session.user.admin) {
+  if(!req.user.admin) {
     console.log("no eres admin")
     return res.redirect("/views/products")
   }
@@ -124,6 +126,8 @@ viewsRouter.get("/profile", (req, res, next) => {
 
   const user = req.user
 
+  console.log(req.user)
+
   return res.render("profile", {
     user: user,
     style: "profile.css",
@@ -160,6 +164,20 @@ viewsRouter.get("/carts", async (req, res) => {
 //   return res.render("carts", {arr: arr})
 // })
 
+viewsRouter.get("/faillogin", (req, res) => {
+
+  return res.render("faillogin")
+})
+
+viewsRouter.get("/failregister", (req, res) => {
+
+  return res.render("failregister")
+})
+
+viewsRouter.get("/fail-recovery", (req, res) => {
+
+  return res.render("fail-recovery")
+})
 
 viewsRouter.get("/recovery-password", (req, res) => {
   

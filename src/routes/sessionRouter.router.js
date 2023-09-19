@@ -13,28 +13,10 @@ sessionRouter.get("/", (req, res) => {
 
 
 sessionRouter.post("/register",
-  passport.authenticate("register", {failureRedirect: "/failregister"}),
+  passport.authenticate("register", {failureRedirect: "/views/failregister"}),
   async (req, res) => {
 
-    // res.send({status: "succes", msg: "user registered"})
-
     return res.redirect("/views/login")
-
-  // if(req.body.name === "" || req.body.lastname === "" || req.body.email === "" || req.body.age === "" || req.body.password === "") {
-
-  //   console.log("ingrese datos")
-
-  //   return res.redirect("/views/login")
-  // }
-
-  // req.body.password = createHash(req.body.password)
-
-  // const dataUser = await userModel.create(req.body)
-
-  // console.log(dataUser)
-
-  // return res.redirect("/views/login")
-
 })
 
 
@@ -45,39 +27,12 @@ sessionRouter.get("/failregister", (req, res) => {
 
 
 sessionRouter.post("/login",
-  passport.authenticate("login", {failureRedirect: "/faillogin", failureFlash: true}),
+  passport.authenticate("login", {failureRedirect: "/views/faillogin", failureFlash: true}),
   async (req, res) => {
-
-    // return res.json(req.user)
-
-  // let user = await userModel.findOne({ email: req.body.email })
-
-  // const user = req.user
-
-  // if(!user) return res.redirect("/views/login")
-
-  // if(!isValidPassword(req.body.password, user.password)) {
-
-  //   return res.status(403).redirect("/views/login")
-  // }
-
-  // user = user.toObject()
-
-  // req.session.user = user
-
-  // req.session.user.admin = false
-
-  // if(req.session.user.email == "adminCoder@coder.com") {
-
-  //   req.session.user.admin = true
-  // }
-
-  // delete user.password
-
-  // return res.json(req.user)
-
+  
   return res.redirect("/views/products")
-})
+  }
+)
 
 
 sessionRouter.get("/faillogin", (req, res) => {
@@ -103,8 +58,16 @@ sessionRouter.post("/logout", async (req, res) => {
   }
 })
 
+const mid = (req, res, next) => {
+  if(!req.body.email) {
 
-sessionRouter.post("/recovery-password", async (req, res) => {
+    return res.redirect("/views/fail-recovery")
+  }
+
+  next()
+}
+
+sessionRouter.post("/recovery-password", mid, async (req, res) => {
 
   const user = await userModel.findOne({email: req.body.email})
 

@@ -37,7 +37,7 @@ export const faceStrategy = new Facebook(
 
     } catch (e) {
 
-
+      return done(e)
 
     }
 

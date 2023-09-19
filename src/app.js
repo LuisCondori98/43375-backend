@@ -75,6 +75,8 @@ socketServer.on("connection", socket => {
 
     socketServer.emit("listado_msgs", msgs)
   });
+
+  socket.on("name-user", (name) => console.log(name))
 })
 
 // ENDPOINTS
@@ -95,7 +97,7 @@ app.get("/prueba", async (req, res) => {
 
 // ROUTE NOT FOUND
 app.get("*", (req, res) => {
-  res.send(`
+  res.status(404).send(`
     <div style='display: flex; flex-direction: column; justify-content: center; align-items: center; height: 500px'>
       <h1>404</h1>
       <h3>NOT FOUND</h3>

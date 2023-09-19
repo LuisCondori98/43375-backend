@@ -23,13 +23,36 @@ export const registerLocalStrategy = new LocalStrategy(
 
       const body = req.body
 
-      body.password = createHash(body.password)
+      if(body.name == "" ||
+         body.lastname == "" ||
+         body.email == "" ||
+         body.age == "" ||
+         body.password == ""
+         ) {
 
-      console.log(body)
+      console.log("no mando datos completos")
 
-      const newUser = await userModel.create(body)
+      return done(null)
 
-      return done(null, newUser)
+      } else {
+
+        const data = {
+          name: body.name,
+          lastname: body.lastname,
+          email: body.email,
+          age: body.age,
+          password: createHash(body.password)
+        }
+  
+        // body.password = createHash(body.password)
+  
+        console.log(body)
+  
+        const newUser = await userModel.create(data)
+  
+        return done(null, newUser)
+
+      }
 
     } catch (e) {
 

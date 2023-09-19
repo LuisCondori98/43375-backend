@@ -6,7 +6,7 @@ export const chatRouter = Router();
 
 chatRouter.get("/", (req, res) => {
 
-  if(!req.session.user) {
+  if(!req.user) {
     
     return res.redirect("/views/login")
   }
@@ -16,11 +16,12 @@ chatRouter.get("/", (req, res) => {
 
 chatRouter.post("/", async (req, res) => {
 
-  // req.body.user = req.session.user.name
+  console.log(req.user)
 
-  socketServer.emit("name-user", {})
-
-  const data = await msgModel.create(req.body)
+  const data = await msgModel.create({
+    user: req.user.name,
+    message: req.body.message
+  })
 
   console.log(data)
 

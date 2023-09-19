@@ -15,8 +15,6 @@ export const initializePassport = () => {
 
   passport.serializeUser((user, done) => {
 
-    console.log({user})
-
     console.log("serialize user")
 
     done(null, user._id)
@@ -35,8 +33,13 @@ export const initializePassport = () => {
     user = user.toObject()
 
     user.access_token = token
-    
-    // console.log({ user })
+
+    user.admin = false
+
+    if(user.email == "adminCoder@coder.com") {
+
+      user.admin = true
+    }
 
     done(null, user)
   })
